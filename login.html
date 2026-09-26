@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Login - Ballers Hub</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header><h1>Ballers Hub Admin Login</h1></header>
+  <div style="text-align:center; padding:2rem;">
+    <input type="text" id="username" placeholder="Username"><br><br>
+    <input type="password" id="password" placeholder="Password"><br><br>
+    <button onclick="login()">Login</button>
+  </div>
+
+  <script>
+    function login() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      if (username === "ronav" && password === "ballershub123") {
+        window.location.href = "admin.html";
+      } else {
+        alert("Invalid credentials!");
+      }
+    }
+  </script>
+</body>
+</html>

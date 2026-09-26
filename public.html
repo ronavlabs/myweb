@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ballers Hub</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Ballers Hub</h1>
+    <p>Your world of football boots</p>
+  </header>
+
+  <section class="products">
+    <div class="product">
+      <img src="images/boot1.jpg" alt="Nike Mercurial">
+      <h3>Nike Mercurial</h3>
+      <p>₹4,999</p>
+      <button onclick="payNow('Nike Mercurial', 499900)">Buy Now</button>
+    </div>
+
+    <div class="product">
+      <img src="images/boot2.jpg" alt="Adidas Predator">
+      <h3>Adidas Predator</h3>
+      <p>₹4,499</p>
+      <button onclick="payNow('Adidas Predator', 449900)">Buy Now</button>
+    </div>
+
+    <div class="product">
+      <img src="images/boot3.jpg" alt="Puma Future">
+      <h3>Puma Future</h3>
+      <p>₹3,999</p>
+      <button onclick="payNow('Puma Future', 399900)">Buy Now</button>
+    </div>
+  </section>
+
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script>
+    async function payNow(productName, amount) {
+      const order = await fetch("/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount, currency: "INR", receipt: productName })
+      }).then(res => res.json());
+
+      var options = {
+        "key": "YOUR_RAZORPAY_KEY_ID",
+        "amount": order.amount,
+        "currency": order.currency,
+        "name": "Ballers Hub",
+        "description": productName,
+        "order_id": order.id,
+        "handler": async function (response) {
+          await fetch("/verify-payment", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(response)
+          }).then(res => res.text())
+            .then(data => window.location.href = "success.html");
+        }
+      };
+      var rzp = new Razorpay(options);
+      rzp.open();
+    }
+  </script>
+</body>
+</html>
