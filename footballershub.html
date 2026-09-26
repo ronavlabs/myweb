@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Football Practice Hub</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin:0; background:#f9f9f9; }
+    header { background:#006400; color:#fff; padding:1rem; text-align:center; }
+    nav { background:#228B22; padding:0.5rem; text-align:center; }
+    nav button { color:#fff; margin:0 1rem; background:none; border:none; font-size:16px; cursor:pointer; }
+    section { padding:2rem; }
+    .card { background:#fff; padding:1rem; margin:1rem; border-radius:8px; width:300px; }
+    .grid { display:flex; gap:20px; flex-wrap:wrap; }
+    button.action { padding:10px 20px; background:#006400; color:#fff; border:none; border-radius:5px; cursor:pointer; }
+    .login-box { background:#fff; padding:2rem; border-radius:8px; width:300px; margin:auto; text-align:center; }
+    input { margin:10px; padding:10px; width:80%; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Football Practice Hub</h1>
+    <p>Train smarter, play better</p>
+  </header>
+  <nav>
+    <button onclick="showSection('home')">Home</button>
+    <button onclick="showSection('drills')">Drills</button>
+    <button onclick="showSection('videos')">Videos</button>
+    <button onclick="showSection('tracker')">Tracker</button>
+    <button onclick="showSection('login')">Login</button>
+    <button onclick="logout()">Logout</button>
+  </nav>
+
+  <!-- Home -->
+  <section id="home">
+    <h2>Daily Drill of the Day</h2>
+    <p id="dailyDrill"></p>
+  </section>
+
+  <!-- Drill Library -->
+  <section id="drills" style="display:none;">
+    <h2>Drill Library</h2>
+    <div class="card">
+      <h3>Passing Drill</h3>
+      <p><strong>How to do it:</strong></p>
+      <ul>
+        <li>Place 4 cones in a square about 5 meters apart.</li>
+        <li>Stand at one cone, your partner at the opposite cone.</li>
+        <li>Pass the ball back and forth, focusing on accuracy.</li>
+        <li>After 10 passes, switch positions and repeat.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Shooting Drill</h3>
+      <p><strong>How to do it:</strong></p>
+      <ul>
+        <li>Set up the ball 10–15 meters from the goal.</li>
+        <li>Take 10 shots from different angles (left, right, center).</li>
+        <li>Record how many goals you score.</li>
+        <li>Repeat daily and track improvement in the Practice Tracker.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Dribbling Drill</h3>
+      <p><strong>How to do it:</strong></p>
+      <ul>
+        <li>Place 6 cones in a straight line, 1 meter apart.</li>
+        <li>Dribble the ball through the cones using both feet.</li>
+        <li>Time yourself and try to improve speed without losing control.</li>
+        <li>Repeat 3–5 times per session.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Video Library -->
+  <section id="videos" style="display:none;">
+    <h2>Training Library</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Dribbling Drill</h3>
+        <iframe width="280" height="160" src="https://www.youtube.com/embed/8v2nJf0dQdY" frameborder="0" allowfullscreen></iframe>
+      </div>
+      <div class="card">
+        <h3>Shooting Drill</h3>
+        <iframe width="280" height="160" src="https://www.youtube.com/embed/1xYwJ6Qk0nM" frameborder="0" allowfullscreen></iframe>
+      </div>
+      <div class="card">
+        <h3>Goalkeeping Drill</h3>
+        <iframe width="280" height="160" src="https://www.youtube.com/embed/5zjXyZkFJmA" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Practice Tracker -->
+  <section id="tracker" style="display:none;">
+    <h2>Practice Tracker</h2>
+    <p>Click the button each time you score a goal in practice.</p>
+    <button class="action" onclick="addGoal()">Add Goal</button>
+    <p id="score">Goals Scored: 0</p>
+  </section>
+
+  <!-- Login Section -->
+  <section id="login" style="display:none;">
+    <div class="login-box">
+      <h2>Login</h2>
+      <input type="text" id="username" placeholder="Username"><br>
+      <input type="password" id="password" placeholder="Password"><br>
+      <button class="action" onclick="login()">Login</button>
+    </div>
+  </section>
+
+  <script>
+    // Section toggle
+    function showSection(sectionId) {
+      document.querySelectorAll("section").forEach(sec => sec.style.display = "none");
+      document.getElementById(sectionId).style.display = "block";
+    }
+
+    // Goal Tracker
+    let goals = 0;
+    function addGoal() {
+      goals++;
+      document.getElementById("score").innerText = "Goals Scored: " + goals;
+    }
+
+    // Daily Drill Randomizer
+    const drills = [
+      "Passing Drill: Focus on accuracy with a partner.",
+      "Shooting Drill: Take 10 shots from different angles.",
+      "Dribbling Drill: Dribble through cones using both feet.",
+      "Goalkeeping Drill: Practice catching and diving saves."
+    ];
+    const randomDrill = drills[Math.floor(Math.random() * drills.length)];
+    document.getElementById("dailyDrill").innerText = randomDrill;
+
+    // Login system
+    let loggedIn = false;
+    function login() {
+      const user = document.getElementById("username").value;
+      const pass = document.getElementById("password").value;
+      if(user === "ronav" && pass === "football123") {
+        loggedIn = true;
+        alert("Login successful! Welcome " + user);
+        showSection("home");
+      } else {
+        alert("Invalid credentials!");
+      }
+    }
+
+    // Logout system
+    function logout() {
+      if(loggedIn) {
+        loggedIn = false;
+        alert("You have been logged out.");
+        showSection("login");
+      } else {
+        alert("You are not logged in.");
+      }
+    }
+  </script>
+</body>
+</html>
