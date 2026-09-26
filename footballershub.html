@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Football Practice Hub</title>
+  <title>Footballers Hub</title>
   <style>
     body { font-family: Arial, sans-serif; margin:0; background:#f9f9f9; }
     header { background:#006400; color:#fff; padding:1rem; text-align:center; }
@@ -11,15 +11,17 @@
     section { padding:2rem; }
     .card { background:#fff; padding:1rem; margin:1rem; border-radius:8px; width:300px; }
     .grid { display:flex; gap:20px; flex-wrap:wrap; }
-    button.action { padding:10px 20px; background:#006400; color:#fff; border:none; border-radius:5px; cursor:pointer; }
+    button.action { padding:10px 20px; background:#006400; color:#fff; border:none; border-radius:5px; cursor:pointer; margin:5px; }
     .login-box { background:#fff; padding:2rem; border-radius:8px; width:300px; margin:auto; text-align:center; }
     input { margin:10px; padding:10px; width:80%; }
+    #welcome { font-weight:bold; color:#006400; }
   </style>
 </head>
 <body>
   <header>
-    <h1>Football Practice Hub</h1>
+    <h1>Footballers Hub</h1>
     <p>Train smarter, play better</p>
+    <p id="welcome"></p>
   </header>
   <nav>
     <button onclick="showSection('home')">Home</button>
@@ -30,15 +32,20 @@
     <button onclick="logout()">Logout</button>
   </nav>
 
-  <!-- Home -->
+  <!-- Home (Introduction only) -->
   <section id="home">
-    <h2>Daily Drill of the Day</h2>
-    <p id="dailyDrill"></p>
+    <h2>Welcome to Footballers Hub</h2>
+    <p>This site is your all‑in‑one training companion.  
+       Explore drills with step‑by‑step instructions, watch training videos,  
+       and track your practice progress. Log in to personalize your experience.</p>
   </section>
 
   <!-- Drill Library -->
   <section id="drills" style="display:none;">
     <h2>Drill Library</h2>
+    <p><strong>Daily Drill:</strong> <span id="randomDrill"></span></p>
+    <button class="action" onclick="refreshDrill()">Refresh Drill</button>
+
     <div class="card">
       <h3>Passing Drill</h3>
       <p><strong>How to do it:</strong></p>
@@ -95,6 +102,7 @@
     <h2>Practice Tracker</h2>
     <p>Click the button each time you score a goal in practice.</p>
     <button class="action" onclick="addGoal()">Add Goal</button>
+    <button class="action" onclick="removeGoal()">Remove Goal</button>
     <p id="score">Goals Scored: 0</p>
   </section>
 
@@ -121,16 +129,26 @@
       goals++;
       document.getElementById("score").innerText = "Goals Scored: " + goals;
     }
+    function removeGoal() {
+      if(goals > 0) {
+        goals--;
+        document.getElementById("score").innerText = "Goals Scored: " + goals;
+      }
+    }
 
-    // Daily Drill Randomizer
+    // Drill Randomizer
     const drills = [
       "Passing Drill: Focus on accuracy with a partner.",
       "Shooting Drill: Take 10 shots from different angles.",
       "Dribbling Drill: Dribble through cones using both feet.",
       "Goalkeeping Drill: Practice catching and diving saves."
     ];
-    const randomDrill = drills[Math.floor(Math.random() * drills.length)];
-    document.getElementById("dailyDrill").innerText = randomDrill;
+    function refreshDrill() {
+      const randomDrill = drills[Math.floor(Math.random() * drills.length)];
+      document.getElementById("randomDrill").innerText = randomDrill;
+    }
+    // Show one drill on load
+    refreshDrill();
 
     // Login system
     let loggedIn = false;
@@ -139,6 +157,7 @@
       const pass = document.getElementById("password").value;
       if(user === "ronav" && pass === "football123") {
         loggedIn = true;
+        document.getElementById("welcome").innerText = "Welcome, " + user + "!";
         alert("Login successful! Welcome " + user);
         showSection("home");
       } else {
@@ -150,6 +169,7 @@
     function logout() {
       if(loggedIn) {
         loggedIn = false;
+        document.getElementById("welcome").innerText = "";
         alert("You have been logged out.");
         showSection("login");
       } else {
