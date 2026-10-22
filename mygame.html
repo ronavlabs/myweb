@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Ultimate Mini Game Hub</title>
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+background:#4facfe;
+text-align:center;
+margin:0;
+padding:20px;
+color:white;
+transition:.5s;
+}
+
+.dark{
+background:#111;
+}
+
+.screen{
+display:none;
+}
+
+.active{
+display:block;
+}
+
+.card{
+background:white;
+color:black;
+max-width:900px;
+margin:auto;
+padding:20px;
+border-radius:15px;
+box-shadow:0 0 15px rgba(0,0,0,.3);
+}
+
+.dark .card{
+background:#333;
+color:white;
+}
+
+button{
+padding:10px 20px;
+margin:5px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-size:16px;
+}
+
+input{
+padding:10px;
+font-size:16px;
+}
+
+.board{
+display:grid;
+grid-template-columns:repeat(3,100px);
+justify-content:center;
+gap:5px;
+margin:20px;
+}
+
+.board button{
+width:100px;
+height:100px;
+font-size:30px;
+}
+
+#memoryBoard{
+display:grid;
+grid-template-columns:repeat(4,80px);
+gap:10px;
+justify-content:center;
+margin-top:20px;
+}
+
+.memoryCard{
+width:80px;
+height:80px;
+background:#2196f3;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:30px;
+color:white;
+cursor:pointer;
+border-radius:10px;
+}
+
+canvas{
+border:3px solid black;
+background:#444;
+}
+
+</style>
+</head>
+
+<body>
+
+<button onclick="toggleDarkMode()">
+🌙 Dark Mode
+</button>
+
+<div id="home" class="screen active">
+
+<h1>🎮 Ultimate Mini Game Hub</h1>
+
+<button onclick="showGame('guess')">🎯 Number Guess</button>
+
+<button onclick="showGame('rps')">✊ Rock Paper Scissors</button>
+
+<button onclick="showGame('math')">🧠 Math Quiz</button>
+
+<button onclick="showGame('ttt')">❌ Tic Tac Toe</button>
+
+<button onclick="showGame('memory')">🃏 Memory Match</button>
+
+<button onclick="showGame('racing')">🚗 Racing</button>
+
+</div>
+<!-- NUMBER GUESS -->
+
+<div id="guess" class="screen">
+<div class="card">
+
+<h2>🎯 Number Guess</h2>
+
+<input id="guessInput" type="number">
+
+<button onclick="guessNumber()">
+Guess
+</button>
+
+<p id="guessResult"></p>
+
+<button onclick="showGame('home')">
+🏠 Home
+</button>
+
+</div>
+</div>
+
+<!-- ROCK PAPER SCISSORS -->
+
+<div id="rps" class="screen">
+<div class="card">
+
+<h2>✊ Rock Paper Scissors</h2>
+
+<button onclick="playRPS('Rock')">
+🪨 Rock
+</button>
+
+<button onclick="playRPS('Paper')">
+📄 Paper
+</button>
+
+<button onclick="playRPS('Scissors')">
+✂️ Scissors
+</button>
+
+<p id="rpsResult"></p>
+
+<button onclick="showGame('home')">
+🏠 Home
+</button>
+
+</div>
+</div>
+
+<!-- MATH QUIZ -->
+
+<div id="math" class="screen">
+<div class="card">
+
+<h2>🧠 Math Quiz</h2>
+
+<p id="question"></p>
+
+<input id="mathAns" type="number">
+
+<button onclick="checkMath()">
+Submit
+</button>
+
+<p id="mathResult"></p>
+
+<p>
+🏆 Score:
+<span id="mathScore">0</span>
+</p>
+
+<p>
+⏱️ Time:
+<span id="mathTimer">30</span>
+</p>
+
+<button onclick="showGame('home')">
+🏠 Home
+</button>
+
+</div>
+</div>
+
+<!-- TIC TAC TOE -->
+
+<div id="ttt" class="screen">
+<div class="card">
+
+<h2>❌ Tic Tac Toe</h2>
+
+<div class="board">
+
+<button id="c0" onclick="move(0)"></button>
+<button id="c1" onclick="move(1)"></button>
+<button id="c2" onclick="move(2)"></button>
+
+<button id="c3" onclick="move(3)"></button>
+<button id="c4" onclick="move(4)"></button>
+<button id="c5" onclick="move(5)"></button>
+
+<button id="c6" onclick="move(6)"></button>
+<button id="c7" onclick="move(7)"></button>
+<button id="c8" onclick="move(8)"></button>
+
+</div>
+
+<p id="tttResult"></p>
+
+<button onclick="resetBoard()">
+🔄 Restart
+</button>
+
+<button onclick="showGame('home')">
+🏠 Home
+</button>
+
+</div>
+</div>
+<!-- MEMORY MATCH -->
+
+<div id="memory" class="screen">
+<div class="card">
+
+<h2>🃏 Memory Match</h2>
+
+<p>
+⏱️ Time:
+<span id="memoryTimer">60</span>
+</p>
+
+<p>
+🏆 Matches:
+<span id="memoryScore">0</span>/8
+</p>
+
+<div id="memoryBoard"></div>
+
+<p id="memoryResult"></p>
+
+<button onclick="startMemoryGame()">
+🔄 Restart
+</button>
+
+<button onclick="showGame('home')">
+🏠 Home
+</button>
+
+</div>
+</div>
+
+<!-- RACING GAME -->
+
+<div id="racing" class="screen">
+<div class="card">
+
+<h2>🚗 Racing Game</h2>
+
+<canvas
+id="raceCanvas"
+width="300"
+height="500">
+</canvas>
+
+<p>
+🏆 Score:
+<span id="raceScore">0</span>
+</p>
+
+<button onclick="startRace()">
+▶ Start Race
+</button>
+
+<button onclick="showGame('home')">
+🏠 Home
+</button>
+
+</div>
+</div>
+
+<script>
+
+function showGame(id){
+
+document
+.querySelectorAll(".screen")
+.forEach(s=>s.classList.remove("active"));
+
+document
+.getElementById(id)
+.classList.add("active");
+
+}
+
+function toggleDarkMode(){
+
+document.body.classList.toggle("dark");
+
+}
+
+/* NUMBER GUESS */
+
+let secret =
+Math.floor(Math.random()*100)+1;
+
+function guessNumber(){
+
+let guess=
+Number(
+document.getElementById(
+"guessInput"
+).value
+);
+
+if(guess===secret){
+
+document.getElementById(
+"guessResult"
+).innerHTML=
+"🎉 Correct!";
+
+secret=
+Math.floor(
+Math.random()*100
+)+1;
+
+}
+else if(guess<secret){
+
+document.getElementById(
+"guessResult"
+).innerHTML=
+"📉 Too Low";
+
+}
+else{
+
+document.getElementById(
+"guessResult"
+).innerHTML=
+"📈 Too High";
+
+}
+
+}
+
+/* ROCK PAPER SCISSORS */
+
+function playRPS(player){
+
+const choices=[
+"Rock",
+"Paper",
+"Scissors"
+];
+
+let cpu=
+choices[
+Math.floor(
+Math.random()*3
+)
+];
+
+let result="";
+
+if(player===cpu){
+
+result="😐 Draw";
+
+}
+else if(
+
+(player==="Rock"&&cpu==="Scissors")
+||
+(player==="Paper"&&cpu==="Rock")
+||
+(player==="Scissors"&&cpu==="Paper")
+
+){
+
+result="🏆 You Win";
+
+}
+else{
+
+result="💀 You Lose";
+
+}
+
+document.getElementById(
+"rpsResult"
+).innerHTML=
+"Computer: "
++ cpu +
+"<br>" +
+result;
+
+}
+
+/* MATH QUIZ */
+
+let answer;
+let score=0;
+
+let mathTime=30;
+let mathTimer;
+
+function newQuestion(){
+
+let a=
+Math.floor(Math.random()*20);
+
+let b=
+Math.floor(Math.random()*20);
+
+answer=a+b;
+
+document.getElementById(
+"question"
+).innerHTML=
+a + " + " + b + " = ?";
+
+}
+function checkMath(){
+
+let user=
+Number(
+document.getElementById(
+"mathAns"
+).value
+);
+
+if(user===answer){
+
+score++;
+
+document.getElementById(
+"mathResult"
+).innerHTML=
+"✅ Correct";
+
+}
+else{
+
+document.getElementById(
+"mathResult"
+).innerHTML=
+"❌ Wrong! Answer: "
++ answer;
+
+}
+
+document.getElementById(
+"mathScore"
+).innerHTML=
+score;
+
+newQuestion();
+
+}
+
+function startMathTimer(){
+
+clearInterval(
+mathTimer
+);
+
+mathTime=30;
+
+document.getElementById(
+"mathTimer"
+).innerHTML=
+mathTime;
+
+mathTimer=
+setInterval(()=>{
+
+mathTime--;
+
+document.getElementById(
+"mathTimer"
+).innerHTML=
+mathTime;
+
+if(mathTime<=0){
+
+clearInterval(
+mathTimer
+);
+
+alert(
+"⏰ Time Up!\nFinal Score: "
++ score
+);
+
+}
+
+},1000);
+
+}
+
+newQuestion();
+startMathTimer();
+
+/* TIC TAC TOE */
+
+/* TIC TAC TOE WITH COMPUTER AI */
+
+let board=
+["","","","","","","","",""];
+
+function move(i){
+
+if(board[i] !== ""){
+return;
+}
+
+if(checkWinner()){
+return;
+}
+
+board[i]="X";
+
+document.getElementById(
+"c"+i
+).innerHTML="X";
+
+if(checkWinner()){
+
+document.getElementById(
+"tttResult"
+).innerHTML=
+"🏆 You Win!";
+
+return;
+
+}
+
+setTimeout(
+computerMove,
+300
+);
+
+}
+
+function computerMove(){
+
+let empty=[];
+
+for(let i=0;i<9;i++){
+
+if(board[i]===""){
+empty.push(i);
+}
+
+}
+
+if(empty.length===0){
+
+document.getElementById(
+"tttResult"
+).innerHTML=
+"🤝 Draw";
+
+return;
+
+}
+
+let movePos=
+empty[
+Math.floor(
+Math.random()*empty.length
+)
+];
+
+board[movePos]="O";
+
+document.getElementById(
+"c"+movePos
+).innerHTML="O";
+
+if(checkWinner()){
+
+document.getElementById(
+"tttResult"
+).innerHTML=
+"🤖 Computer Wins!";
+
+return;
+
+}
+
+if(board.every(cell=>cell!=="")){
+
+document.getElementById(
+"tttResult"
+).innerHTML=
+"🤝 Draw";
+
+}
+
+}
+
+function checkWinner(){
+
+const wins=[
+
+[0,1,2],
+[3,4,5],
+[6,7,8],
+
+[0,3,6],
+[1,4,7],
+[2,5,8],
+
+[0,4,8],
+[2,4,6]
+
+];
+
+for(let w of wins){
+
+if(
+board[w[0]] &&
+board[w[0]]===board[w[1]] &&
+board[w[1]]===board[w[2]]
+){
+
+return true;
+
+}
+
+}
+
+return false;
+
+}
+
+function resetBoard(){
+
+board=
+["","","","","","","","",""];
+
+for(let i=0;i<9;i++){
+
+document.getElementById(
+"c"+i
+).innerHTML="";
+
+}
+
+document.getElementById(
+"tttResult"
+).innerHTML="";
+
+}
+
+/* MEMORY MATCH */
+
+let cards=[
+
+"🍎","🍎",
+"🍌","🍌",
+"🍇","🍇",
+"🍒","🍒",
+"🍉","🍉",
+"🥝","🥝",
+"🍍","🍍",
+"🍓","🍓"
+
+];
+
+let opened=[];
+let matched=0;
+
+let memoryTime=60;
+let memoryTimer;
+
+function startMemoryGame(){
+
+matched=0;
+opened=[];
+memoryTime=60;
+
+document.getElementById(
+"memoryScore"
+).innerHTML="0";
+
+document.getElementById(
+"memoryTimer"
+).innerHTML="60";
+
+clearInterval(
+memoryTimer
+);
+
+memoryTimer=
+setInterval(()=>{
+
+memoryTime--;
+
+document.getElementById(
+"memoryTimer"
+).innerHTML=
+memoryTime;
+
+if(memoryTime<=0){
+
+clearInterval(
+memoryTimer
+);
+
+document.getElementById(
+"memoryResult"
+).innerHTML=
+"⏰ Time Up!";
+
+}
+
+},1000);
+
+cards.sort(
+()=>Math.random()-0.5
+);
+
+let board=
+document.getElementById(
+"memoryBoard"
+);
+
+board.innerHTML="";
+
+cards.forEach((emoji)=>{
+
+let card=
+document.createElement("div");
+
+card.className=
+"memoryCard";
+
+card.innerHTML="?";
+
+card.onclick=
+()=>flipCard(
+card,
+emoji
+);
+
+board.appendChild(
+card
+);
+
+});
+
+document.getElementById(
+"memoryResult"
+).innerHTML="";
+
+}
+
+function flipCard(
+card,
+emoji
+){
+
+if(memoryTime<=0)
+return;
+
+if(card.innerHTML!=="?")
+return;
+
+if(opened.length===2)
+return;
+
+card.innerHTML=
+emoji;
+
+opened.push({
+card,
+emoji
+});
+
+if(opened.length===2){
+
+if(
+opened[0].emoji===
+opened[1].emoji
+){
+
+matched++;
+
+document.getElementById(
+"memoryScore"
+).innerHTML=
+matched;
+
+opened=[];
+
+if(matched===8){
+
+clearInterval(
+memoryTimer
+);
+
+let finalScore=
+(matched*100)+
+(memoryTime*10);
+
+document.getElementById(
+"memoryResult"
+).innerHTML=
+
+"🎉 You Won! Score: "
++ finalScore;
+
+}
+
+}
+else{
+
+setTimeout(()=>{
+
+opened[0].card.innerHTML="?";
+opened[1].card.innerHTML="?";
+
+opened=[];
+
+},800);
+
+}
+
+}
+
+}
+
+startMemoryGame();
+
+/* HARD RACING GAME */
+
+const raceCanvas=
+document.getElementById(
+"raceCanvas"
+);
+
+const raceCtx=
+raceCanvas.getContext(
+"2d"
+);
+
+let playerCar;
+let enemyCars=[];
+let raceScore;
+let raceLoop;
+
+function startRace(){
+
+playerCar={
+
+x:130,
+y:420,
+
+w:40,
+h:70
+
+};
+
+enemyCars=[];
+
+for(let i=0;i<3;i++){
+
+enemyCars.push({
+
+x:
+Math.floor(
+Math.random()*5
+)*60+10,
+
+y:-i*180,
+
+w:40,
+h:70
+
+});
+
+}
+
+raceScore=0;
+
+document.getElementById(
+"raceScore"
+).innerHTML=
+raceScore;
+
+clearInterval(
+raceLoop
+);
+
+raceLoop=
+setInterval(
+updateRace,
+20
+);
+
+}
+
+function updateRace(){
+
+raceCtx.clearRect(
+0,
+0,
+300,
+500
+);
+
+raceCtx.fillStyle=
+"white";
+
+for(let i=0;i<500;i+=40){
+
+raceCtx.fillRect(
+145,
+i,
+10,
+20
+);
+
+}
+
+raceCtx.fillStyle=
+"blue";
+
+raceCtx.fillRect(
+
+playerCar.x,
+playerCar.y,
+
+playerCar.w,
+playerCar.h
+
+);
+
+enemyCars.forEach(car=>{
+
+raceCtx.fillStyle=
+"red";
+
+raceCtx.fillRect(
+
+car.x,
+car.y,
+
+car.w,
+car.h
+
+);
+
+car.y +=
+5 +
+raceScore/10;
+
+if(car.y>500){
+
+car.y=-100;
+
+car.x=
+Math.floor(
+Math.random()*5
+)*60+10;
+
+raceScore++;
+
+document.getElementById(
+"raceScore"
+).innerHTML=
+raceScore;
+
+}
+
+if(
+
+playerCar.x <
+car.x+car.w
+
+&&
+
+playerCar.x+
+playerCar.w >
+car.x
+
+&&
+
+playerCar.y <
+car.y+car.h
+
+&&
+
+playerCar.y+
+playerCar.h >
+car.y
+
+){
+
+clearInterval(
+raceLoop
+);
+
+alert(
+"💥 Crash!\nScore: "
++ raceScore
+);
+
+}
+
+});
+
+}
+
+document.addEventListener(
+"keydown",
+function(e){
+
+if(!playerCar)
+return;
+
+if(
+e.key==="ArrowLeft"
+||
+e.key==="a"
+){
+
+playerCar.x-=10;
+
+}
+
+if(
+e.key==="ArrowRight"
+||
+e.key==="d"
+){
+
+playerCar.x+=10;
+
+}
+
+if(playerCar.x<0)
+playerCar.x=0;
+
+if(playerCar.x>260)
+playerCar.x=260;
+
+});
+
+</script>
+
+</body>
+</html>
