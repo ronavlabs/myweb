@@ -6,6 +6,7 @@
 <title>Ronav's Hub</title>
 
 <style>
+
 *{
     margin:0;
     padding:0;
@@ -32,8 +33,8 @@ h1{
 }
 
 .subtitle{
-    opacity:0.9;
     margin-bottom:40px;
+    opacity:0.9;
 }
 
 .link-btn{
@@ -53,17 +54,17 @@ h1{
 
 .link-btn:hover{
     transform:scale(1.05);
-    background:#f2f2f2;
+    background:#f5f5f5;
 }
 
 footer{
     margin-top:40px;
+    padding:20px;
     font-size:14px;
-    opacity:0.9;
 }
 </style>
-</head>
 
+</head>
 <body>
 
 <div class="container">
