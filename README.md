@@ -3,10 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ronav's School Fair Hub</title>
+<title>Ronav's Hub</title>
 
 <style>
-
 *{
     margin:0;
     padding:0;
@@ -17,51 +16,51 @@
 body{
     background:linear-gradient(135deg,#2196F3,#673AB7);
     min-height:100vh;
-    text-align:center;
     color:white;
+    text-align:center;
 }
 
 .container{
-    max-width:800px;
+    max-width:900px;
     margin:auto;
     padding:50px 20px;
 }
 
 h1{
-    margin-bottom:15px;
     font-size:3rem;
+    margin-bottom:10px;
 }
 
 .subtitle{
-    margin-bottom:30px;
     opacity:0.9;
+    margin-bottom:40px;
 }
 
 .link-btn{
     display:block;
+    width:320px;
     margin:15px auto;
     padding:18px;
-    width:320px;
-    text-decoration:none;
-    color:#333;
     background:white;
-    border-radius:15px;
+    color:#333;
+    text-decoration:none;
     font-size:20px;
     font-weight:bold;
+    border-radius:15px;
     transition:0.3s;
-    box-shadow:0 4px 15px rgba(0,0,0,0.2);
+    box-shadow:0 4px 12px rgba(0,0,0,0.25);
 }
 
 .link-btn:hover{
     transform:scale(1.05);
-    background:#f5f5f5;
+    background:#f2f2f2;
 }
 
 footer{
     margin-top:40px;
-    padding:20px;
+    font-size:14px;
+    opacity:0.9;
 }
-
 </style>
 </head>
 
@@ -88,7 +87,7 @@ Choose a website to open
 </a>
 
 <a class="link-btn" href="index1.html">
-📂 School Fair Directory
+⭐ Favourite People
 </a>
 
 <a class="link-btn" href="mygame.html">
